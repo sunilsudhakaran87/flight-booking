@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress SpringFacetInspection -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+
+  <!--
+  <bean id="gcpConnectionFactory" class="org.apache.camel.component.google.pubsub.GooglePubsubConnectionFactory">
+    <property name="serviceAccount" value="pub-sub-editor@crypto-haven-217910.iam.gserviceaccount.com"/>
+    <property name="serviceAccountKey" value="${gcp.key}"/>
+  </bean>
+
+
+
+  <bean id="zipkinTracer" class="org.apache.camel.zipkin.ZipkinTracer">
+    <property name="endpoint" value="http://localhost:9411/api/v2/spans"/>
+    <property name="serviceName" value="flight-booking-service"/>
+    <property name="rate" value="1.0f"/>
+    <property name="includeMessageBodyStreams" value="true"/>
+  </bean>
+-->
+
+
+  <!-- You could also define a traditional camel context here -->
+  <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+
+    <dataFormats>
+      <json id="jackson" library="Jackson"/>
+    </dataFormats>
+
+    <onException>
+      <exception>java.lang.Exception</exception>
+      <handled>
+        <constant>true</constant>
+      </handled>
+
+      <setHeader headerName="CamelHttpResponseCode">
+        <constant>500</constant>
+      </setHeader>
+
+      <setHeader headerName="Content-Type">
+        <constant>application/json</constant>
+      </setHeader>
+
+      <setHeader headerName="exceptionMessage">
+        <simple resultType="java.lang.String">${exception}</simple>
+      </setHeader>
+
+      <setBody>
+        <groovy>
+            import org.sanjay.exception.CamelApplicationException
+            def ex = new CamelApplicationException(request.getHeader('exceptionMessage'))
+            return ex
+        </groovy>
+      </setBody>
+    </onException>
+
+    <route id="flight-booking-route">
+
+      <!--<from uri="google-pubsub:{{spring.cloud.gcp.project-id}}:{{spring.cloud.gcp.subscription.name}}?connectionFactory=#gcpConnectionFactory"/>-->
+      <from uri="direct:doBooking"/>
+
+      <setHeader headerName="flightId">
+        <simple>${body.flightId}</simple>
+      </setHeader>
+
+      <setHeader headerName="customerId">
+        <simple>${body.customerId}</simple>
+      </setHeader>
+
+      <to uri="sql: SELECT * FROM FLIGHT WHERE flight_id = :#flightId?dataSource=#dataSource"/>
+
+      <log message="Received response from DB"/>
+
+      <choice>
+        <when>
+          <simple>${headers.CamelSqlRowCount} == 0</simple>
+          <setHeader headerName="unused">
+            <groovy>
+              throw new RuntimeException('No matching records found in the flights database')
+            </groovy>
+          </setHeader>
+        </when>
+      </choice>
+
+
+      <log message="Body is ${body}"/>
+
+      <setHeader headerName="CamelSqlRetrieveGeneratedKeys">
+        <constant>true</constant>
+      </setHeader>
+
+      <to uri="sql:INSERT INTO booking (flight_id, customer_id) VALUES(:#flightId, :#customerId)?dataSource=#dataSource"/>
+
+      <log message="Successfully created a booking in database"/>
+
+      <setHeader headerName="bookingId">
+        <simple>${headers.CamelSqlGeneratedKeyRows[0][booking_id]}</simple>
+      </setHeader>
+
+      <log message="bookingId is ${headers.bookingId}"/>
+
+
+      <to uri="sql: SELECT name from customer where customer_id = :#customerId?outputType=SelectOne&amp;dataSource=#dataSource"/>
+      <setHeader headerName="customerName">
+        <simple>${body}</simple>
+      </setHeader>
+
+      <log message="After selecting customer customer_name is ${headers.customerName}"/>
+
+      <to uri="sql:SELECT airline, departure, destination, departure_date, flight_class, price from flight where flight_id = :#flightId?outputType=SelectOne&amp;dataSource=#dataSource"/>
+      <log message="FLight data: ${body}"/>
+      <setHeader headerName="airline">
+        <simple>${body[airline]}</simple>
+      </setHeader>
+      <setHeader headerName="departure">
+        <simple>${body[departure]}</simple>
+      </setHeader>
+      <setHeader headerName="destination">
+        <simple>${body[airline]}</simple>
+      </setHeader>
+      <setHeader headerName="departureDate">
+        <simple>${body[departure_date]}</simple>
+      </setHeader>
+      <setHeader headerName="flightClass">
+        <simple>${body[flight_class]}</simple>
+      </setHeader>
+      <setHeader headerName="price">
+        <simple>${body[price]}</simple>
+      </setHeader>
+
+
+      <log message="flight id is ${headers.flightId} and customer id is ${headers.customerId}"/>
+
+
+      <log message="After selecting booking id: ${headers.bookingId}"/>
+      <setBody>
+        <groovy>
+          import org.sanjay.model.BookingResponse
+
+          BookingResponse response = new BookingResponse()
+
+          response.setBookingId(request.getHeader('bookingId'))
+          response.setCustomerName(request.getHeader('customerName'))
+          response.setAirline(request.getHeader('airline'))
+          response.setDeparture(request.getHeader('departure'))
+          response.setDestination(request.getHeader('destination'))
+          response.setDepartureDate(request.getHeader('departureDate'))
+          response.setFlightClass(request.getHeader('flightClass'))
+          response.setPrice(request.getHeader('price'))
+
+          return response
+        </groovy>
+      </setBody>
+
+      <log message="Response body is ${body}"/>
+    </route>
+  </camelContext>
+
+</beans>

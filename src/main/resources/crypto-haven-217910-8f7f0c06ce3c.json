@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "crypto-haven-217910",
+  "private_key_id": "8f7f0c06ce3ca6e95bba8d5b13f13f13a67959c7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCdI4zrcSuEP6wT\nU8b5+A0WjjzL5aEtOV6MrB1cjlBI4ZB0ocIMCFMmqwR1KZTFepWnoGqVlSfDDTen\nCqY7bITVerAHRqZdMfXENXXjC2zbX1V1Y8SUpngCbcbGZyZMt7FyOHtfRZaQBqnl\neDyRebJOapRs/6AewBAqsOlhaG+toBO//Pu3dL1SNZZe1TMEil+v1A8ILXM7eYDw\nzmZeZw+zDaXEDbVN4eSoYQfbNauJ4ehD2Zp2Wrs5kIiRYc4XkMpAWQq7o+d71kXg\n+rDBKMttrdXG+zbQkM9wnxtV+PUowdiiiOvwgJRML22vR8maxuneArLlFRYm6rvm\nYClRmVS/AgMBAAECggEAEd2H2QDN3MRMcQoWVjcgbc8QFHJwB689E6tBz1MSx6Z1\ngP0fDbUolv3cjOGEW4tbVmqDk6wYkDGBgUlRqvHkjEzdlIYwxem3Mm6Nj5mt76cA\nFU+ZevkOLeCDN+1kSlacIwtO438K5icLy94GrNd0MTwm0dmiP7zAWcoxTnTMNaYO\n0xkigXMYuyTmV/8jcP7AZHECFVU0dqX+QliluToeSqhNPgRf7DBt8RUABRjp/06l\nLXu/3ESHw2kO3iv7URl4gnXZXJ5NxR/9MO8qnLcpqRn29xSXOo9kffXGPrzg3JRL\nYkbXoQbrMj0hu/eeYjyLyyqEfEdkAdLHT5olCdET2QKBgQDROQxRfmRvvV+V1XVH\nlh4dsNJB9CVDiYkyHEAYX8KlgzG8CVHQ0w/vPO5z+ox2U48wcbXGMb6YxUAQz6fo\nD+kGKJC9e7Gq/ol952LFGX5Ch62PN1OZF64OPHDJaUQgCjqLE0iCzCMJXCTwUOFF\nN2fgLEVW2raCVhlbQfAqw2nB0wKBgQDARXSczaP3ePM5TJ0PvjHwdVsdBGOnXkvO\nUgimgTUT40oaGCGyXeD38dKsRK3GMczX6Bjbcr0vi/Vo+ZjdKa1G06N57uhcvJhk\nTj0g4RX1bPiuJfxDWyLmIFjqqW33Uus3e3QoJD5WkioH9vipxkFi1A1s2TUqmtCV\nKY7twXph5QKBgChdfUbrv6zfOGXL/QiGqeDIkIgw9k+FZXbJhIQvVXphSWMh2SsU\nzWo2szqlCBx8GpAaIBvQ1RjcVXPo3FglWavaf7JO/wQif5xO2/ty460qSA3teq96\nphYRCyGQsZgM4Sab3c1+XPQdVvMWZ5/XBK93WxlasQOMYO/+VLurX+gJAoGAfRo0\nH/qln1XxW+z/nMiyEbUqTZ0XgkUWqe4ydrRHZuNSydu9wSLYSDvuSex97SFmGW2J\nDvB/LDqyuVT+I5kEh7sY+TN7uSt1NH67w3LxKLl4rUdF9kWMVZPihv0q8evf5D/N\nenjqnsWH15rYfQ7kaHt1KMfDki8dXJCn0Qc8rAkCgYAEy4RPgWFWCr+BglWrsg3v\n73TnLBfncYvBvxlUecJ4yfqOmF3ojYBUtmDqyir8RqJuEgmoj4spZ3cuPrWcgPg0\nWicZyGkcNJsDKDTeAHYWMw/faGreYEQJIljn7o+0Uqez6ldQTUxYfsKtVhcOsMv6\nPdd8nvkHfiy/KP+/YBIQbQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "pub-sub-editor@crypto-haven-217910.iam.gserviceaccount.com",
+  "client_id": "104145531109463953856",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/pub-sub-editor%40crypto-haven-217910.iam.gserviceaccount.com"
+}
